@@ -308,6 +308,7 @@ if __name__ == "__main__":
 
     programmer = programmer_class(serial_args, pins, **device_args)
     if programmer.write_image(args.binary):
-        print(programmer.go())
+        if not programmer.go():
+            raise RuntimeError("Failed to run program")
     else:
-        print("Failed")
+        raise RuntimeError("Failed to write image")
