@@ -4,7 +4,7 @@ This repository contains the scripts used for setting up the Raspberry Pi develo
 
 Currently, the script handles the following:
 - Installing `build-essential`
-- Installing `gpio-zero`
+- Installing `gpiozero`
 - Installing the base ROS Jazzy with `colcon` extensions
 - Setting up network connections
     - Connect to EECS-Labs
