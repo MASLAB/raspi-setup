@@ -12,6 +12,7 @@ Currently, the script handles the following:
 - Setting up Poll Me Maybe
 - Enabling `PIP_BREAK_SYSTEM_PACKAGES` to allow installation of python libraries
 - Enabling UART interface
+- Setting up hardware permission
 - Setting up hardware pins to interact with [Raven](https://github.com/MASLAB/raven) board
 - Loading firmware onto [Raven](https://github.com/MASLAB/raven) board
 - Configurating Git + generating SSH key
@@ -31,8 +32,12 @@ Prerequisites:
 For each Raspberry Pi:  
 1. Clone this repo with:  
     `git clone https://github.com/MASLAB/raspi-setup`
-2. Run setup script, passing in team number as first argument and MASLAB year as second argument:  
-   `./setup.sh <team-number> <maslab-year>`
+2. Run setup script, passing in these argument in correct order:  
+    1. Team number
+    2. MASLAB year
+    3. Number of Raspberry Pi's GPIO pin that is connected to Raven's RST pin (pinout.xyz) 
+    4. Number of Raspberry Pi's GPIO pin that is connected to Raven's BOOT0 pin  
+    `./setup.sh <team-number> <maslab-year> <raven-rst-pin> <raven-bt0-pin`
 3. Copy SSH public key (output of script) and add it as a deploy key to the team repo
    
 And you're done! Keep this repo to update [Raven](https://github.com/MASLAB/raven) firmware:  
