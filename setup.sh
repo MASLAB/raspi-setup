@@ -65,13 +65,14 @@ sudo usermod -G tty,gpio,dialout ${USER}
 ## Enable UART
 sudo dtoverlay $UART_OVERLAY
 sudo echo "dtoverlay=$UART_OVERLAY" >> /boot/firmware/config.txt
-## Setup GPIO pin
+## Setup GPIO pins
 sudo echo "gpio=$STM32_RST_PIN=pu" >> /boot/firmware/config.txt
 sudo echo "gpio=$STM32_BT0_PIN=pd" >> /boot/firmware/config.txt
-echo "export STM32_RST_PIN=$STM32_RST_PIN" >> ~/.bashrc
-echo "export STM32_BT0_PIN=$STM32_BT0_PIN" >> ~/.bashrc
 
 # Setup Raven
+echo "export STM32_DEVICE=$STM32_DEVICE" >> ~/.bashrc
+echo "export STM32_RST_PIN=$STM32_RST_PIN" >> ~/.bashrc
+echo "export STM32_BT0_PIN=$STM32_BT0_PIN" >> ~/.bashrc
 ./update-firmware.sh
 
 # Set up Git
