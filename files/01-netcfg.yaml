@@ -1,0 +1,16 @@
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:
+      dhcp4: false
+      dhcp6: false
+      addresses:
+      - 192.168.1.1/24
+  wifis:
+    wlan0:
+      access-points:
+          EECS_Labs: {}
+        dhcp4: true
+        optional: true
+

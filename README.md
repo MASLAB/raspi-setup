@@ -3,20 +3,24 @@
 This repository contains the scripts used for setting up the Raspberry Pi development environment for MASLAB.
 
 Currently, the script handles the following:
+- Updating software
+- Installing `git`
 - Installing `build-essential`
 - Installing `gpiozero`
 - Installing the base ROS Jazzy with `colcon` extensions
+- Enabling `PIP_BREAK_SYSTEM_PACKAGES` to allow installation of python libraries
 - Setting up network connections
     - Connect to EECS-Labs
     - DHCP server on Ethernet to remote in over ethernet at fixed `192.168.1.1` IP
 - Setting up Poll Me Maybe
-- Enabling `PIP_BREAK_SYSTEM_PACKAGES` to allow installation of python libraries
-- Enabling UART interface
-- Setting up hardware permission
-- Setting up hardware pins to interact with [Raven](https://github.com/MASLAB/raven) board
-- Loading firmware onto [Raven](https://github.com/MASLAB/raven) board
+- Setting up Raspberry Pi hardware
+    - Set up Raspberry Pi USB Power option
+    - Set up hardware permission for `tty` `gpio` `dialout`
+    - Enable UART interface
+    - Set up GPIO pins for [Raven](https://github.com/MASLAB/raven)
+- Load [Raven](https://github.com/MASLAB/raven) firmware
 - Configurating Git + generating SSH key
-- Cloning `kitbot` and team's MASLAB repo 
+- Cloning team's MASLAB repo 
 
 ## Setup Steps
 
@@ -35,9 +39,7 @@ For each Raspberry Pi:
 2. Run setup script, passing in these argument in correct order:  
     1. Team number
     2. MASLAB year
-    3. Number of Raspberry Pi's GPIO pin that is connected to Raven's RST pin (pinout.xyz) 
-    4. Number of Raspberry Pi's GPIO pin that is connected to Raven's BOOT0 pin  
-    `./setup.sh <team-number> <maslab-year> <raven-rst-pin> <raven-bt0-pin`
+    `./setup.sh <team-number> <maslab-year>`
 3. Copy SSH public key (output of script) and add it as a deploy key to the team repo
    
 And you're done! Keep this repo to update [Raven](https://github.com/MASLAB/raven) firmware:  
