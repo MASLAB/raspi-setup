@@ -11,7 +11,8 @@ Currently, the script handles the following:
 - Enabling `PIP_BREAK_SYSTEM_PACKAGES` to allow installation of python libraries
 - Setting up network connections
     - Connect to EECS-Labs
-    - DHCP server on Ethernet to remote in over ethernet at fixed `192.168.1.1` IP
+    - DHCP server on ethernet to remote in over ethernet at fixed `192.168.1.1` IP
+    - WiFi to ethernet forwarding to have internet access when connected through ethernet
 - Setting up Poll Me Maybe
 - Setting up Raspberry Pi hardware
     - Set up Raspberry Pi USB Power option
@@ -38,7 +39,7 @@ For each Raspberry Pi:
     `git clone https://github.com/MASLAB/raspi-setup`
 2. Run setup script, passing in these argument in correct order:  
     1. Team number
-    2. MASLAB year
+    2. MASLAB year  
     `./setup.sh <team-number> <maslab-year>`
 3. Copy SSH public key (output of script) and add it as a deploy key to the team repo
    
