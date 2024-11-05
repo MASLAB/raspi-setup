@@ -26,7 +26,7 @@ sudo apt install -y curl
 sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
 sudo apt update
-sudo apt install ros-$ROS_VERSION-ros-base python3-rosdep python3-colcon-common-extensions
+sudo apt install ros-$ROS_VERSION-ros-base python3-rosdep python3-colcon-common-extensions python3-pip
 sudo rosdep init
 rosdep update
 echo "source /opt/ros/$ROS_VERSION/setup.bash" >> ~/.bashrc
@@ -51,7 +51,8 @@ sudo iptables -A FORWARD -i wlan0 -o eth0 -m state -—state RELATED,ESTABLISHED
 sudo iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 sudo netfilter-persistent save
 sudo netfilter-persistent reload
-## Setup Poll Me Maybe
+
+# Setup Poll Me Maybe
 sudo cp ./files/pollmemaybe.sh /usr/local/bin/
 crontab -l 2> /dev/null | { cat; echo "* * * * * sh /usr/local/bin/pollmemaybe.sh > /dev/null"; } | crontab -
 
@@ -79,5 +80,4 @@ git config --global user.email maslab-$2-team-$1@mit.edu
 ssh-keygen -t rsa -b 4096 -C "maslab-$2-team-$1@mit.edu"
 cat ~/.ssh/id_rsa.pub
 read -p "Add SSH to team repository deploy key then press any key to continue... " -n1 -s
-cd ~
-git clone git@github.mit.edu:maslab-$2/team-$1.git
+git clone git@github.mit.edu:maslab-$2/team-$1.git ~/ros_ws
