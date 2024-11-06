@@ -1,4 +1,6 @@
 #!/bin/bash
+
+# Set to exit on error
 set -e
 
 # Constants to be updated
