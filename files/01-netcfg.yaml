@@ -10,7 +10,7 @@ network:
   wifis:
     wlan0:
       access-points:
-          EECS_Labs: {}
-        dhcp4: true
-        optional: true
+        "EECS_Labs": {}
+      dhcp4: true
+      optional: true
 
