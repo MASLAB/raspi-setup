@@ -53,6 +53,10 @@ sudo iptables -A FORWARD -i wlan0 -o eth0 -m state --state RELATED,ESTABLISHED -
 sudo iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 sudo netfilter-persistent save
 sudo netfilter-persistent reload
+## Skip waiting for eth0 to load
+sudo mkdir -p /etc/systemd/system/systemd-networkd-wait-online.service.d
+sudo cp ./files/wait-online-override.conf /etc/systemd/system/systemd-networkd-wait-online.service.d/override.conf
+sudo systemctl daemon-reload
 
 # Setup Poll Me Maybe
 sudo cp ./files/pollmemaybe.sh /usr/local/bin/
