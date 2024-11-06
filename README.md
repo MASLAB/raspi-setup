@@ -4,7 +4,6 @@ This repository contains the scripts used for setting up the Raspberry Pi develo
 
 Currently, the script handles the following:
 - Updating software
-- Installing `git`
 - Installing `build-essential`
 - Installing `gpiozero`
 - Installing the base ROS Jazzy with `colcon` extensions
@@ -15,10 +14,10 @@ Currently, the script handles the following:
     - WiFi to ethernet forwarding to have internet access when connected through ethernet
 - Setting up Poll Me Maybe
 - Setting up Raspberry Pi hardware
+    - Enable UART, SPI, I2C interfaces
     - Set up Raspberry Pi USB Power option
-    - Set up hardware permission for `tty` `gpio` `dialout`
-    - Enable UART interface
     - Set up GPIO pins for [Raven](https://github.com/MASLAB/raven)
+- Install `adafruit-blinka`
 - Load [Raven](https://github.com/MASLAB/raven) firmware
 - Configurating Git + generating SSH key
 - Cloning team's MASLAB repo 
@@ -42,6 +41,9 @@ For each Raspberry Pi:
     2. MASLAB year  
     `./setup.sh <team-number> <maslab-year>`
 3. Copy SSH public key (output of script) and add it as a deploy key to the team repo
+4. Reboot
+5. Go back into this repository and run  
+`./update-firmware.sh`
    
 And you're done! Keep this repo to update [Raven](https://github.com/MASLAB/raven) firmware:  
-`./update-firmware.sh`
+`git pull && ./update-firmware.sh`
