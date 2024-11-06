@@ -310,5 +310,7 @@ if __name__ == "__main__":
     if programmer.write_image(args.binary):
         if not programmer.go():
             raise RuntimeError("Failed to run program")
+        else:
+            print("Firmware updated successfully")
     else:
         raise RuntimeError("Failed to write image")
