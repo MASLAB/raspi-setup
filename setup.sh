@@ -31,6 +31,7 @@ sudo rosdep init
 rosdep update
 echo "source /opt/ros/$ROS_VERSION/setup.bash" >> ~/.bashrc
 echo "export PIP_BREAK_SYSTEM_PACKAGES=1" >> ~/.bashrc
+source ~/.bashrc
 
 # Setup networking
 ## Copy and apply netplan configuration
