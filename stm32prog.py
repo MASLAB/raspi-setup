@@ -195,6 +195,19 @@ SUPPORTED_DEVICES = {
             "pid": 0x431,
         },
     },
+    "STM32G431xx": {
+        "class": STM32Programmer,
+        "serial_args": {"parity": serial.PARITY_EVEN},
+    },
+    "STM32G431CBUx": {
+        "class": STM32Programmer,
+        "serial_args": {"parity": serial.PARITY_EVEN},
+        "device_args": {
+            "flash_size": 128000,
+            "start_address": 0x08000000,
+            "pid": 0x468,
+        },
+    },
 }
 
 if __name__ == "__main__":
