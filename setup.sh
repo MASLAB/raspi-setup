@@ -6,8 +6,8 @@ set -e
 # Constants to be updated
 ROS_VERSION=jazzy
 STM32_DEVICE=STM32G431CBUx
-STM32_RST_PIN=17
-STM32_BT0_PIN=18
+STM32_RST_PIN=18
+STM32_BT0_PIN=17
 UART=uart0
 
 # Update and upgrade
