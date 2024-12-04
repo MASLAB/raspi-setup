@@ -56,6 +56,7 @@ class STM32Programmer:
         return ack_byte == STM32Programmer.ACK
 
     def __enter_bootloader(self):
+        self.__ser.read_all()
         self.__ser.write(STM32Programmer.START)
         return self.__get_ack()
 
@@ -122,6 +123,7 @@ class STM32Programmer:
             time.sleep(0.5)  # Wait 500ms
             pins["rst"].on()
             time.sleep(0.5)  # Wait another 500ms before reset boot
+            del pins["rst"]
 
         # Reset boot pins
         if pins["bt0"] is not None:
