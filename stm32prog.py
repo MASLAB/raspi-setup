@@ -31,7 +31,8 @@ class STM32Programmer:
         self.__program_start_address = device_args["start_address"]
         self.__ser = serial.Serial(**serial_args)
         self.__ser.timeout = 0.1
-        self._start_bootloader(pins)
+        self.__pins = pins
+        self.__start_bootloader()
         if not self.__enter_bootloader():
             raise RuntimeError("Unable to enter bootloader")
         pid = self._get_pid()
@@ -109,7 +110,8 @@ class STM32Programmer:
             return self.__get_ack()
         return False
 
-    def _start_bootloader(self, pins):
+    def __start_bootloader(self):
+        pins = self.__pins
         # Set boot pins
         if pins["bt0"] is not None:
             pins["bt0"].on()
@@ -117,13 +119,7 @@ class STM32Programmer:
             pins["bt1"].off()
         time.sleep(0.1)  # Wait 100ms
 
-        # Reset
-        if pins["rst"] is not None:
-            pins["rst"].off()
-            time.sleep(0.5)  # Wait 500ms
-            pins["rst"].on()
-            time.sleep(0.5)  # Wait another 500ms before reset boot
-            del pins["rst"]
+        self.reset()
 
         # Reset boot pins
         if pins["bt0"] is not None:
@@ -132,6 +128,16 @@ class STM32Programmer:
         if pins["bt1"] is not None:
             pins["bt1"].on()
             del pins["bt1"]
+
+    def reset(self):
+        pins = self.__pins
+        # Reset
+        if pins["rst"] is not None:
+            pins["rst"].off()
+            time.sleep(0.5)  # Wait 500ms
+            pins["rst"].on()
+            time.sleep(0.5)  # Wait another 500ms before reset boot
+            del pins["rst"]
 
     def __get_id(self):
         if self.__write_command(STM32Programmer.GET_ID):
@@ -327,5 +333,6 @@ if __name__ == "__main__":
             raise RuntimeError("Failed to run program")
         else:
             print("Firmware updated successfully")
+            programmer.reset()
     else:
         raise RuntimeError("Failed to write image")
