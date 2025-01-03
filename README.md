@@ -34,15 +34,15 @@ Prerequisites:
     ![services](images/imager-services.png)  
 
 For each Raspberry Pi:  
-1. Clone this repo with:  
-    `git clone https://github.com/MASLAB/raspi-setup`
-2. Run setup script, passing in these argument in correct order:  
+1. Clone and `cd` into this repo with:  
+    `git clone https://github.com/MASLAB/raspi-setup ~/raspi-setup && cd ~/raspi-setup`
+3. Run setup script, passing in these argument in correct order:  
     1. Team number
     2. MASLAB year  
     `./setup.sh <team-number> <maslab-year>`
-3. Copy SSH public key (output of script) and add it as a deploy key to the team repo
-4. Reboot
-5. Go back into this repository and run  
+4. Copy SSH public key (output of script) and add it as a deploy key to the team repo
+5. Reboot
+6. Go back into this repository and run  
 `./update-firmware.sh`
    
 And you're done! Keep this repo to update [Raven](https://github.com/MASLAB/raven) firmware:  
