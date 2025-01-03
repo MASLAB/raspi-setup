@@ -63,13 +63,14 @@ sudo cp ./files/pollmemaybe.sh /usr/local/bin/
 crontab -l 2> /dev/null | { cat; echo "* * * * * sh /usr/local/bin/pollmemaybe.sh > /dev/null"; } | crontab -
 
 # Setup hardware
+sudo cp /boot/firmware/config.txt /boot/firmware/config.txt.bak
 sudo apt install -y raspi-config
 ## Enable interfaces
 sudo raspi-config nonint do_i2c 0
 sudo raspi-config nonint do_spi 0
 sudo raspi-config nonint do_serial 0
 sudo raspi-config nonint disable_raspi_config_at_boot 0
-sudo cp /boot/firmware/config.txt /boot/firmware/config.txt.bak
+sudo sh -c "echo "dtoverlay=i2c2-pi5,pins_12_13" >> /boot/firmware/config.txt"
 ## Setup power option
 sudo sh -c "echo "usb_max_current_enable=1" >> /boot/firmware/config.txt"
 ## Add UART param
