@@ -3,6 +3,20 @@
 # Set to exit on error
 set -e
 
+read -p 'Team number: ' TEAM_NUMBER
+if ! [[ "$TEAM_NUMBER" =~ ^[0-9]+$ ]]
+    then
+        echo "Please enter integer for team number"
+fi
+TEAM_NUMBER=$((TEAM_NUMBER))
+
+read -p 'Year: ' YEAR
+if ! [[ "$TEAM_NUMBER" =~ ^[0-9]+$ ]]
+    then
+        echo "Please enter integer for year"
+fi
+YEAR=$((YEAR))
+
 # Constants to be updated
 ROS_VERSION=jazzy
 STM32_DEVICE=STM32G431CBUx
@@ -29,6 +43,8 @@ sudo apt update
 sudo apt install -y ros-$ROS_VERSION-ros-base python3-rosdep python3-colcon-common-extensions python3-pip
 sudo rosdep init
 rosdep update
+echo "export ROS_DOMAIN_ID=$TEAM_NUMBER" >> ~/.bashrc
+echo "export FASTDDS_BUILTIN_TRANSPORTS=LARGE_DATA" >> ~/.bashrc
 echo "source /opt/ros/$ROS_VERSION/setup.bash" >> ~/.bashrc
 echo "export PIP_BREAK_SYSTEM_PACKAGES=1" >> ~/.bashrc
 source ~/.bashrc
@@ -84,16 +100,20 @@ sudo apt install -y i2c-tools libgpiod-dev python3-libgpiod
 pip3 install --upgrade RPi.GPIO
 pip3 install --upgrade adafruit-blinka
 
+# Install maslab-lib
+pip install --upgrade git+https://github.com/MASLAB/maslab-lib.git
+
 # Setup Raven
 sudo apt install python3-numpy
+pip3 install --upgrade pyserial
 echo "export STM32_DEVICE=$STM32_DEVICE" >> ~/.bashrc
 echo "export STM32_RST_PIN=$STM32_RST_PIN" >> ~/.bashrc
 echo "export STM32_BT0_PIN=$STM32_BT0_PIN" >> ~/.bashrc
 
 # Set up Git
-git config --global user.name "Team $1"
-git config --global user.email maslab-$2-team-$1@mit.edu
-ssh-keygen -t rsa -b 4096 -C "maslab-$2-team-$1@mit.edu"
+git config --global user.name "Team $TEAM_NUMBER"
+git config --global user.email maslab-$YEAR-team-$TEAM_NUMBER@mit.edu
+ssh-keygen -t rsa -b 4096 -C "maslab-$YEAR-team-$TEAM_NUMBER@mit.edu"
 cat ~/.ssh/id_rsa.pub
 read -p "Add SSH to team repository deploy key then press any key to continue... " -n1 -s
-git clone git@github.mit.edu:maslab-$2/team-$1.git ~/ros_ws
+git clone git@github.mit.edu:maslab-$YEAR/team-$TEAM_NUMBER.git ~/ros_ws
