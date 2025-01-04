@@ -137,7 +137,6 @@ class STM32Programmer:
             time.sleep(0.5)  # Wait 500ms
             pins["rst"].on()
             time.sleep(0.5)  # Wait another 500ms before reset boot
-            del pins["rst"]
 
     def __get_id(self):
         if self.__write_command(STM32Programmer.GET_ID):
