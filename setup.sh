@@ -94,6 +94,8 @@ sudo sh -c "echo "dtparam=$UART" >> /boot/firmware/config.txt"
 ## Setup GPIO pins
 sudo sh -c "echo "gpio=$STM32_RST_PIN=pu" >> /boot/firmware/config.txt"
 sudo sh -c "echo "gpio=$STM32_BT0_PIN=pd" >> /boot/firmware/config.txt"
+## Update EEPROM to turn off 3v3 when off
+sudo rpi-eeprom-config --apply ./files/eeprom.conf
 
 # Install adafruit-blinka
 sudo apt install -y i2c-tools libgpiod-dev python3-libgpiod
