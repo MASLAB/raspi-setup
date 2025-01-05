@@ -97,6 +97,9 @@ sudo sh -c "echo "gpio=$STM32_BT0_PIN=pd" >> /boot/firmware/config.txt"
 ## Update EEPROM to turn off 3v3 when off
 sudo rpi-eeprom-config --apply ./files/eeprom.conf
 
+# Enable installing from pip
+export PIP_BREAK_SYSTEM_PACKAGES=1
+
 # Install adafruit-blinka
 sudo apt install -y i2c-tools libgpiod-dev python3-libgpiod
 pip3 install --upgrade RPi.GPIO
