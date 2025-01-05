@@ -3,21 +3,10 @@
 # Set to exit on error
 set -e
 
-read -p 'Team number: ' TEAM_NUMBER
-if ! [[ "$TEAM_NUMBER" =~ ^[0-9]+$ ]]
-    then
-        echo "Please enter integer for team number"
-fi
-TEAM_NUMBER=$((TEAM_NUMBER))
-
-read -p 'Year: ' YEAR
-if ! [[ "$TEAM_NUMBER" =~ ^[0-9]+$ ]]
-    then
-        echo "Please enter integer for year"
-fi
-YEAR=$((YEAR))
+TEAM_NUMBER=$((echo $USER | sed "s/team//g"))
 
 # Constants to be updated
+YEAR=2025
 ROS_VERSION=jazzy
 STM32_DEVICE=STM32G431CBUx
 STM32_RST_PIN=18
