@@ -3,7 +3,7 @@
 # Set to exit on error
 set -e
 
-TEAM_NUMBER=$((echo $USER | sed "s/team//g"))
+TEAM_NUMBER=$(echo $USER | sed "s/team//g")
 
 # Constants to be updated
 YEAR=2025
