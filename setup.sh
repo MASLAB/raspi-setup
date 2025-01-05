@@ -118,7 +118,7 @@ echo "export STM32_BT0_PIN=$STM32_BT0_PIN" >> ~/.bashrc
 # Set up Git
 git config --global user.name "Team $TEAM_NUMBER"
 git config --global user.email maslab-$YEAR-team-$TEAM_NUMBER@mit.edu
-ssh-keygen -t rsa -b 4096 -C "maslab-$YEAR-team-$TEAM_NUMBER@mit.edu"
+ssh-keygen -t ed25519 -C "maslab-$YEAR-team-$TEAM_NUMBER@mit.edu"
 cat ~/.ssh/id_rsa.pub
 read -p "Add SSH to team repository deploy key then press any key to continue... " -n1 -s
 git clone git@github.mit.edu:maslab-$YEAR/team-$TEAM_NUMBER.git ~/ros_ws
