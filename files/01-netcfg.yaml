@@ -11,6 +11,8 @@ network:
     wlan0:
       access-points:
         "EECS_Labs": {}
+        "MASLAB":
+          password: "balsamic"
       dhcp4: true
       optional: true
 
