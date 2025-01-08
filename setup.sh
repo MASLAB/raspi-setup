@@ -33,7 +33,7 @@ sudo apt install -y ros-$ROS_VERSION-ros-base python3-rosdep python3-colcon-comm
 sudo rosdep init
 rosdep update
 echo "export ROS_DOMAIN_ID=$TEAM_NUMBER" >> ~/.bashrc
-echo "export FASTDDS_BUILTIN_TRANSPORTS=LARGE_DATA" >> ~/.bashrc
+# echo "export FASTDDS_BUILTIN_TRANSPORTS=LARGE_DATA" >> ~/.bashrc
 echo "source /opt/ros/$ROS_VERSION/setup.bash" >> ~/.bashrc
 echo "export PIP_BREAK_SYSTEM_PACKAGES=1" >> ~/.bashrc
 source ~/.bashrc
