@@ -1,13 +1,6 @@
 #!/usr/bin/env bash
 
-# Echo colors
-ECHO_BLUE='\033[0;34m'
-ECHO_GRAY='\033[0;37m'
-ECHO_CLEAR='\033[0m' # No Color
-
-echo_color() {
-    echo -e "$1$2$ECHO_CLEAR"
-}
+source ./utils/echo-color.sh
 
 # Make folder
 echo_color $ECHO_BLUE "Making folder to store image"
@@ -37,6 +30,7 @@ fi
 # Mount image
 echo_color $ECHO_BLUE "Mounting base image"
 MOUNT_POINT=/mnt/raspios
+export MOUNT_POINT
 
 source ./utils/mount-image.sh
 
@@ -48,7 +42,15 @@ fi
 
 # Customize image
 echo_color $ECHO_BLUE "Customizing image for MASLAB"
-echo_color $ECHO_GRAY "Doing stuffs"
+
+source ./utils/run-chroot.sh
+
+echo_color $ECHO_GRAY "Update"
+run-chroot << EOF
+apt update
+apt -y dist-upgrade --auto-remove --purge
+apt clean
+EOF
 
 echo_color $ECHO_BLUE "Unmounting modified image"
 unmount_image
