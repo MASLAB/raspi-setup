@@ -33,13 +33,13 @@ mount_image() {
 }
 
 unmount_image() {
-  set +e
-
   if mountpoint -q "$MNT"; then
+    echo "Unmounting root filesystem..."
     sudo umount -R "$MNT"
   fi
 
   if [[ -n "${LOOP:-}" ]]; then
+    echo "Detaching image..."
     sudo losetup -d "$LOOP"
   fi
 }

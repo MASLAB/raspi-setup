@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 # Echo colors
-ECHO_BLUE='\033[0;34m'
-ECHO_GRAY='\033[0;37m'
+ECHO_BLUE='\033[1;34m'
+ECHO_PURPLE='\033[1;35m'
+ECHO_GRAY='\033[1;37m'
 ECHO_CLEAR='\033[0m' # No Color
 
 echo_color() {
