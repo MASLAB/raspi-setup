@@ -5,6 +5,18 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
+# Start fresh if clean
+while [ "$1" != "" ]; do
+  case $1 in
+  --clean)
+    rm -rf ./base-image
+    ;;
+  *)
+    ;;
+  esac
+  shift
+done
+
 source ./utils/const.sh
 
 source ./utils/echo-color.sh
@@ -16,9 +28,9 @@ mkdir -p $BASE_IMAGE_DIR
 # Download base image
 echo_color $ECHO_BLUE "Downloading latest raspios image from Raspberry Pi"
 if ! [[ -f "$RASPIOS_IMAGE_XZ_PATH" ]]; then
-    wget -nc -O $RASPIOS_IMAGE_XZ_PATH http://downloads.raspberrypi.org/raspios_arm64_latest
+  wget -nc -O $RASPIOS_IMAGE_XZ_PATH http://downloads.raspberrypi.org/raspios_arm64_latest
 else
-    echo -e "Image is already downloaded"
+  echo -e "Image is already downloaded"
 fi
 
 # Extract compressed image
@@ -46,6 +58,13 @@ apt update
 apt -y dist-upgrade --auto-remove --purge
 apt clean
 EOF
+# ## Timezone
+# echo_color $ECHO_PURPLE "Setting timezone"
+# echo "America/New_York" > "${MOUNT_POINT}/etc/timezone"
+# rm "${MOUNT_POINT}/etc/localtime"
+# on_chroot << EOF
+# dpkg-reconfigure -f noninteractive tzdata
+# EOF
 ## USB Driver
 echo_color $ECHO_PURPLE "Install USB WiFi driver"
 run-chroot << EOF
@@ -64,6 +83,9 @@ echo_color $ECHO_PURPLE "Install XRDP"
 run-chroot << EOF
 apt install -y xrdp
 EOF
+## Disable first boot wizard
+echo_color $ECHO_PURPLE "Disable first boot wizard"
+rm -f "${MOUNT_POINT}/etc/xdg/autostart/piwiz.desktop"
 ## Boot files
 echo_color $ECHO_PURPLE "Override boot files"
 install -m 644 files/cmdline.txt "${MOUNT_POINT}/boot/"
