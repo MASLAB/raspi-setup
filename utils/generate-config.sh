@@ -12,11 +12,13 @@ CONFIG_DIR="./team-configs"
 CLOUD_INIT_CONFIG_FILE="$CONFIG_DIR/cloud-init-${USER}.cfg"
 NETPLAN_CONFIG_FILE="$CONFIG_DIR/network-${USER}.yaml"
 
+mkdir -p "$CONFIG_DIR"
+
 ## Automatically generate keys
 # KEYDIR="./team-keys"
 # KEYFILE="$KEYDIR/id_ed25519_${USER}"
 
-# mkdir -p "$CONFIG_DIR" "$KEYDIR"
+# mkdir -p "$KEYDIR"
 
 # if [[ ! -f "$KEYFILE" ]]; then
 #   ssh-keygen -t ed25519 -C "$USER@pi" -N "" -f "$KEYFILE"
@@ -26,7 +28,9 @@ NETPLAN_CONFIG_FILE="$CONFIG_DIR/network-${USER}.yaml"
 # PRV_KEY="$(cat "$KEYFILE")"
 
 PASS_HASH="$(openssl passwd -6 $PASSWORD)" # Hash it cus why not
-WIFI_PASS_HASH="$(openssl passwd -6 ${PASSWORD}wifi)" # Hash it cus why not
+WIFI_SSID=${USER}wifi
+WIFI_PASS=${PASSWORD}wifi
+WIFI_PASS_PSK="$(wpa_passphrase $WIFI_SSID $WIFI_PASS | grep -oP '\bpsk=\K([a-f0-9]{64})')"
 
 cat > "$CLOUD_INIT_CONFIG_FILE" <<EOF
 #cloud-config
@@ -52,21 +56,37 @@ users:
     lock_passwd: false
     passwd: "$PASS_HASH"
 ssh_pwauth: true
+runcmd:
+  - sudo raspi-config nonint do_i2c 0
+  - sudo raspi-config nonint do_spi 0
+  - sudo raspi-config nonint do_serial_hw 0
+  - sudo raspi-config nonint do_serial_cons 1
+  - sudo raspi-config nonint do_ssh 0
+  - sudo raspi-config nonint do_camera 0
+  - sudo raspi-config nonint disable_raspi_config_at_boot 0
+  - sudo raspi-config nonint do_boot_behaviour B1
+  - sudo rpi-eeprom-config --apply /eeprom.conf
 EOF
 
 cat > "$NETPLAN_CONFIG_FILE" <<EOF
 network:
   version: 2
-  wifis:
-    renderer: NetworkManager
-    wlan0:
+  renderer: NetworkManager
+  ethernets:
+    eth0:
       dhcp4: true
-      regulatory-domain: "US"
+      optional: true
+  wifis:
+    hotspot:
+      match:
+        name: wlan0
+      dhcp4: true
+      optional: false
+      regulatory-domain: US
       access-points:
         "${USER}wifi":
-          password: "$WIFI_PASS_HASH"
+          password: $WIFI_PASS_PSK
           mode: ap
-      optional: true
 EOF
 
 # echo "Cloud-init config: $CLOUD_INIT_CONFIG_FILE"

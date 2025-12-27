@@ -58,14 +58,7 @@ apt update
 apt -y dist-upgrade --auto-remove --purge
 apt clean
 EOF
-# ## Timezone
-# echo_color $ECHO_PURPLE "Setting timezone"
-# echo "America/New_York" > "${MOUNT_POINT}/etc/timezone"
-# rm "${MOUNT_POINT}/etc/localtime"
-# on_chroot << EOF
-# dpkg-reconfigure -f noninteractive tzdata
-# EOF
-## USB Driver
+## USB WiFi Driver
 echo_color $ECHO_PURPLE "Install USB WiFi driver"
 run-chroot << EOF
 apt install -y dkms build-essential
@@ -86,10 +79,25 @@ EOF
 ## Disable first boot wizard
 echo_color $ECHO_PURPLE "Disable first boot wizard"
 rm -f "${MOUNT_POINT}/etc/xdg/autostart/piwiz.desktop"
+## Disable booting into GUI
+echo_color $ECHO_PURPLE "Disable booting into GUI"
+run-chroot << EOF
+systemctl set-default multi-user.target
+mkdir /etc/systemd/system/getty.target.wants
+ln -fs /lib/systemd/system/getty@.service /etc/systemd/system/getty.target.wants/getty@tty1.service
+EOF
+rm -rf "${MOUNT_POINT}/etc/systemd/system/getty@tty1.service.d"
 ## Boot files
 echo_color $ECHO_PURPLE "Override boot files"
-install -m 644 files/cmdline.txt "${MOUNT_POINT}/boot/"
 install -m 644 files/config.txt "${MOUNT_POINT}/boot/"
+## EEPROM file
+echo_color $ECHO_PURPLE "Copy EEPROM config file"
+install -m 644 files/eeprom.conf "${MOUNT_POINT}/"
+## Polkit
+echo_color $ECHO_PURPLE "Add polkit rules"
+install -m 644 files/10-shutdown-reboot.rules "${MOUNT_POINT}/etc/polkit-1/rules.d/"
+install -m 644 files/11-system-sources-refresh.rules "${MOUNT_POINT}/etc/polkit-1/rules.d/"
+install -m 644 files/12-wifi.rules "${MOUNT_POINT}/etc/polkit-1/rules.d/"
 
 # Unmount image
 echo_color $ECHO_BLUE "Unmounting maslab image"

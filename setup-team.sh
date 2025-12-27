@@ -59,10 +59,10 @@ source ./utils/mount-image.sh
 mount_image "$TEAM_IMAGE_PATH" "$MOUNT_POINT"
 
 # Customize image
-echo_color $ECHO_BLUE "Customizing image for team"
+echo_color $ECHO_BLUE "Customizing image for $MASLAB_TEAM_NAME"
 
 ## Set config files
-echo_color $ECHO_PURPLE "Generate and set cloud-init and network-config files"
+echo_color $ECHO_PURPLE "Generate and set cloud-init file"
 TEAM_CONFIGS=( $(./utils/generate-config.sh $MASLAB_TEAM_NAME $MASLAB_TEAM_PASS) )
 cp ${TEAM_CONFIGS[0]} $MOUNT_POINT/boot/user-data
 cp ${TEAM_CONFIGS[1]} $MOUNT_POINT/boot/network-config
@@ -70,3 +70,8 @@ cp ${TEAM_CONFIGS[1]} $MOUNT_POINT/boot/network-config
 # Unmount image
 echo_color $ECHO_BLUE "Unmounting maslab image"
 unmount_image
+
+# Write image
+SD_CARD_DEV=/dev/$(lsblk | grep -oh -E -i -w 'sd[a-z]+')
+echo_color $ECHO_BLUE "Writing to $SD_CARD_DEV"
+rpi-imager --cli $TEAM_IMAGE_PATH $SD_CARD_DEV
