@@ -12,10 +12,14 @@ This repository contain scripts to modify, generate, and deploy Raspberry Pi OS 
 
 ### Deploy steps
 1. Use the SD card reader to attach an SD card to the Pi
-1. Clone and cd into this repo with:
-    `git clone https://github.com/MASLAB/raspi-setup && cd ./raspi-setup`
-1. Run `setup-team.sh` script with team name and password
-    `./setup-team.sh <team_name> <team_password>`
+1. Clone and cd into this repo with:  
+    ```bash
+    git clone https://github.com/MASLAB/raspi-setup && cd ./raspi-setup
+    ```
+1. Run `setup-team.sh` script with team name and password  
+    ```bash
+   ./setup-team.sh <team_name> <team_password>`
+    ```
 1. Remove the SD card
 1. Rinse and repeat for all team
 
