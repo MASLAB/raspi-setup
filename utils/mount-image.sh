@@ -36,6 +36,7 @@ unmount_image() {
   if mountpoint -q "$MNT"; then
     echo "Unmounting root filesystem..."
     sudo umount -R "$MNT"
+    sudo rm -rf "$MNT"
   fi
 
   if [[ -n "${LOOP:-}" ]]; then

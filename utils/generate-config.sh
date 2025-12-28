@@ -6,9 +6,11 @@ if [[ $# -ne 2 ]]; then
   exit 1
 fi
 
+source ./utils/const.sh
+
 USER="$1"
 PASSWORD="$2"
-CONFIG_DIR="./team-configs"
+CONFIG_DIR=$WORKING_DIR/team-configs
 CLOUD_INIT_CONFIG_FILE="$CONFIG_DIR/cloud-init-${USER}.cfg"
 NETPLAN_CONFIG_FILE="$CONFIG_DIR/network-${USER}.yaml"
 
