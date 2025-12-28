@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
+# Usage: maslab-update (--skip-raven) (--skip-lib)
+# --skip-raven: skip updating Raven firmware
+# --skip-lib: skip updating library
+
+STM32_DEVICE=STM32G431CBUx
+STM32_RST_PIN=18
+STM32_BT0_PIN=17
+UART=uart0
 
 # Echo colors
 ECHO_BLACK='\033[1;30m'
 ECHO_RED='\033[1;31m'
 ECHO_GREEN='\033[1;32m'
-ECHO_ORANGE='\033[1;33m'
+ECHO_YELLOW='\033[1;33m'
 ECHO_BLUE='\033[1;34m'
 ECHO_PURPLE='\033[1;35m'
 ECHO_CYAN='\033[1;36m'
@@ -12,38 +20,56 @@ ECHO_GRAY='\033[1;37m'
 ECHO_CLEAR='\033[0m' # No Color
 
 echo_color() {
-    echo -e "$1$2$ECHO_CLEAR"
+  echo -e "$1$2$ECHO_CLEAR"
 }
 
-STM32_DEVICE=STM32G431CBUx
-STM32_RST_PIN=18
-STM32_BT0_PIN=17
-UART=uart0
+DO_RAVEN=true
+DO_LIB=true
+while [ "$1" != "" ]; do
+  case $1 in
+  --skip-raven)
+    DO_RAVEN=false
+    ;;
+  --skip-lib)
+    DO_LIB=false
+    ;;
+  *)
+    ;;
+  esac
+  shift
+done
 
-# https://www.codestudy.net/blog/github-url-for-latest-release-of-the-download-file/
-RAVEN_FIRMWARE_LINK=$(curl -s "https://api.github.com/repos/MASLAB/raven/releases/latest" | \
-jq -r '.assets[] | select(.name == "raven.bin").browser_download_url')
+if [[ "$DO_RAVEN" = true ]] ; then
+  # https://www.codestudy.net/blog/github-url-for-latest-release-of-the-download-file/
+  RAVEN_FIRMWARE_LINK=$(curl -s "https://api.github.com/repos/MASLAB/raven/releases/latest" | \
+  jq -r '.assets[] | select(.name == "raven.bin").browser_download_url')
 
-if [[ $RAVEN_FIRMWARE_LINK == *"raven.bin"* ]]; then
+  if [[ $RAVEN_FIRMWARE_LINK == *"raven.bin"* ]]; then
   echo_color $ECHO_BLUE "Downloading Raven firmware"
   wget -q --show-progress $RAVEN_FIRMWARE_LINK
   echo_color $ECHO_BLUE "Programming Raven"
   if python3 /usr/local/bin/stm32prog.py -d $STM32_DEVICE -b ./raven.bin -rst $STM32_RST_PIN -bt0 $STM32_BT0_PIN -sbd 460800 ; then
-    echo_color $ECHO_GREEN "Raven programmed"
+      echo_color $ECHO_GREEN "Raven programmed"
   else
-    echo_color $ECHO_RED "Unable to program Raven"
+      echo_color $ECHO_RED "Unable to program Raven"
   fi
   rm raven.bin
-else
+  else
   echo_color $ECHO_RED "Unable to download Raven firmware"
-fi
-
-echo_color $ECHO_BLUE "Installing MASLAB library"
-export PIP_BREAK_SYSTEM_PACKAGES=1
-if pip3 install --upgrade git+https://github.com/MASLAB/maslab-lib.git --quiet ; then
-    echo_color $ECHO_GREEN "MASLAB library updated"
+  fi
 else
-    echo_color $ECHO_RED "Unable to update MASLAB library"
+  echo_color $ECHO_YELLOW "Skipped Raven firmware update"
 fi
 
-pip3 uninstall -y RPi.GPIO --quiet
+if [[ "$DO_LIB" = true ]] ; then
+  echo_color $ECHO_BLUE "Installing MASLAB library"
+  export PIP_BREAK_SYSTEM_PACKAGES=1
+  if pip3 install --upgrade git+https://github.com/MASLAB/maslab-lib.git --quiet ; then
+    echo_color $ECHO_GREEN "MASLAB library updated"
+    pip3 uninstall -y RPi.GPIO --quiet
+  else
+    echo_color $ECHO_RED "Unable to update MASLAB library"
+  fi
+else
+  echo_color $ECHO_YELLOW "Skipped MASLAB library update"
+fi
