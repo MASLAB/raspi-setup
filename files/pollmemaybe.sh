@@ -1,6 +1,6 @@
 #!/bin/bash
 
 team="$(hostname)"
-ip="$(hostname -I | grep -oh -E -i -w '\b((10)|(18))[^ ]+')"
-ssid="$(iw dev wlan0 info | grep ssid | awk '{print $2}')"
+ip="$(nmcli device show wlan1 | grep IP4.ADDRESS | grep -oh -E -i -w "([0-9]{1,3}[\.]){3}[0-9]{1,3}")" # https://www.shellhacks.com/regex-find-ip-addresses-file-grep/
+ssid="$(nmcli device show wlan1 | grep GENERAL.CONNECTION | awk '{print $2}')"
 curl "http://maslab.mit.edu/pollmemaybe/?team=${team}&ip=${ip}&ssid=${ssid}">/dev/null
