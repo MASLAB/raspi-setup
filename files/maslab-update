@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # https://www.codestudy.net/blog/github-url-for-latest-release-of-the-download-file/
 RAVEN_FIRMWARE_LINK=$(curl -s "https://api.github.com/repos/MASLAB/raven/releases/latest" | \
