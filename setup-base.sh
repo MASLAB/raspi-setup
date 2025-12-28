@@ -98,14 +98,6 @@ EOF
 ## Disable first boot wizard
 echo_color $ECHO_PURPLE "Disable first boot wizard"
 sudo rm -f "${MOUNT_POINT}/etc/xdg/autostart/piwiz.desktop"
-# ## Disable booting into GUI
-# echo_color $ECHO_PURPLE "Disable booting into GUI"
-# run-chroot << EOF
-# systemctl set-default multi-user.target
-# mkdir /etc/systemd/system/getty.target.wants
-# ln -fs /lib/systemd/system/getty@.service /etc/systemd/system/getty.target.wants/getty@tty1.service
-# EOF
-# rm -rf "${MOUNT_POINT}/etc/systemd/system/getty@tty1.service.d"
 ## Boot files
 echo_color $ECHO_PURPLE "Override boot files"
 sudo install -m 644 files/config.txt "${MOUNT_POINT}/boot/"

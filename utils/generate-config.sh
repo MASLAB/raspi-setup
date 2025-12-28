@@ -68,6 +68,7 @@ runcmd:
   - sudo raspi-config nonint disable_raspi_config_at_boot 0
   - sudo raspi-config nonint do_boot_behaviour B1
   - sudo rpi-eeprom-config --apply /eeprom.conf
+  - sudo reboot
 EOF
 
 cat > "$NETPLAN_CONFIG_FILE" <<EOF
