@@ -88,7 +88,7 @@ run-chroot << EOF
 apt install -y jq
 EOF
 sudo install -m 755 files/maslab-update "${MOUNT_POINT}/usr/local/bin"
-sudo install -m 644 files/stm32prog.py "${MOUNT_POINT}/usr/local/bin"
+sudo install -m 755 files/stm32prog.py "${MOUNT_POINT}/usr/local/bin"
 ## Pollmemaybe
 echo_color $ECHO_PURPLE "Setup PollMeMaybe"
 sudo install -m 755 files/pollmemaybe.sh "${MOUNT_POINT}/usr/local/bin"
