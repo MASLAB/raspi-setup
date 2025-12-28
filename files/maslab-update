@@ -1,0 +1,20 @@
+#!/usr/bin/bash
+
+# https://www.codestudy.net/blog/github-url-for-latest-release-of-the-download-file/
+RAVEN_FIRMWARE_LINK=$(curl -s "https://api.github.com/repos/MASLAB/raven/releases/latest" | \
+jq -r '.assets[] | select(.name == "raven.bin").browser_download_url')
+
+wget $RAVEN_FIRMWARE_LINK
+
+STM32_DEVICE=STM32G431CBUx
+STM32_RST_PIN=18
+STM32_BT0_PIN=17
+UART=uart0
+
+python3 stm32prog.py -d $STM32_DEVICE -b ./raven.bin -rst $STM32_RST_PIN -bt0 $STM32_BT0_PIN -sbd 460800
+
+export PIP_BREAK_SYSTEM_PACKAGES=1
+pip3 install --upgrade git+https://github.com/MASLAB/maslab-lib.git
+pip3 uninstall -y RPi.GPIO
+
+rm raven.bin
