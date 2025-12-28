@@ -92,6 +92,8 @@ network:
           mode: ap
 EOF
 
+echo "$USER,$PASSWORD" >> $WORKING_DIR/password.txt
+
 # echo "Cloud-init config: $CLOUD_INIT_CONFIG_FILE"
 # echo "SSH private key: $KEYFILE"
 # echo "SSH public key: $KEYFILE.pub"
